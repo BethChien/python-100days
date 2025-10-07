@@ -7,16 +7,18 @@ return not stack 回傳true
 
 class Solution:
     def isValid(self, s: str) -> bool:
-        #create a hashmap that matches open parenthese with its closing
-        #create a dictionary to matching open and close bracket
-        matching = {')':'(', '}':'{', ']':'['}
+        # 建立對應關係表：右括號 → 左括號
+        matching = {')': '(', '}': '{', ']': '['}
         stack = []
-        #s = "()[]{}"
+
         for char in s:
-            if char not in matching:
+            if char not in matching:  # 若是左括號
                 stack.append(char)
-            elif matching[char] != stack[-1] or not stack:
-                return False
-            else:
-                stack.pop()
+            else:  # 若是右括號
+                # 若堆疊為空 或 最上層不匹配，回傳 False
+                if not stack or matching[char] != stack[-1]:
+                    return False
+                stack.pop()  # 匹配成功就移除一組
+
+        # 若最後堆疊為空，代表全部匹配完成
         return not stack
